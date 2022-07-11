@@ -16,27 +16,27 @@ def project_has_hook(hook_url, project):
 def add_hook_all_projects(gitlab_url, hook_url, events):
     gl = gitlab.Gitlab(gitlab_url, private_token=os.environ['GITLAB_TOKEN'])
 
+    hook_events = {
+        "url": hook_url,
+        "push_events": 0,
+        "tag_push_events": 0,
+        "issue_events": 0,
+        "note_events": 0,
+        "merge_request_events": 0,
+        "wiki_page_events": 0,
+        "pipeline_events": 0,
+        "job_events": 0,
+        "deployment_events": 0,
+        "enable_ssl_verification": 0,
+    }
+
+    for ev in events:
+        hook_events[ev] = 1
+
     projects = gl.projects.list(iterator=True)
     for project in projects:
         contains_hook = project_has_hook(hook_url, project)
         if not contains_hook:
-            hook_events = {
-                "url": hook_url,
-                "push_events": 0,
-                "tag_push_events": 0,
-                "issue_events": 0,
-                "note_events": 0,
-                "merge_request_events": 0,
-                "wiki_page_events": 0,
-                "pipeline_events": 0,
-                "job_events": 0,
-                "deployment_events": 0,
-                "enable_ssl_verification": 0,
-            }
-
-            for ev in events:
-                hook_events[ev] = 1
-
             project.hooks.create(hook_events)
 
 
