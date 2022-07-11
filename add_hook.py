@@ -19,7 +19,7 @@ def add_hook_all_projects(gitlab_url, hook_url, events):
     projects = gl.projects.list(iterator=True)
     for project in projects:
         contains_hook = project_has_hook(hook_url, project)
-        if not contains_hook and project.name == "dbz-gohan":
+        if not contains_hook:
             hook_events = {
                 "url": hook_url,
                 "push_events": 0,
