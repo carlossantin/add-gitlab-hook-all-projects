@@ -5,12 +5,10 @@ import argparse
 
 
 def project_has_hook(hook_url, project):
-    contains_hook = False
     for proj_hook in project.hooks.list():
         if proj_hook.url == hook_url:
-            contains_hook = True
-            break
-    return contains_hook
+            return True
+    return False
 
 
 def add_hook_all_projects(gitlab_url, hook_url, events):
